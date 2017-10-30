@@ -15,6 +15,10 @@ Overview of object models:
  * ItemGroupAttribute : Represents an (Attribute, Value) pair we are grouping by. GroupId (FK into Groups), AttributeId (FK into AttributeTypes), Value (value of Attribute)
  * ItemGroup : Represents an ItemGroup with Name, Description, and Id (PK) . An Item i belongs to ItemGroup g if i.Attributes represents a superset of g.Attributes
 
+Notes on SQL Server:
+ * Skystem.Challenge.App.Tests : DatabaseName=SkystemTest, ConfigName=SkystemDb
+ * Skystem.Challenge.App : DatabaseName=Skystem, ConfigName=SkystemDb
+ * Both configurations use SQL authentication and connects as sa with password Password123
 
 ### Libraries used:
 
