@@ -20,6 +20,8 @@ Notes on SQL Server:
  * Skystem.Challenge.App : DatabaseName=Skystem, ConfigName=SkystemDb
  * Both configurations use SQL authentication and connects as sa with password Password123
 
+After setting up IIS for Skystem.Challenge.App, documentation for API can be found @ /swagger
+
 ### Libraries used:
 
  * SimpleInjector : Tried it out for DI; I rather like it :) 
