@@ -1,0 +1,5 @@
+C:\code\Skystem.Challenge\Skystem.Challenge.Core\bin\Debug\Skystem.Challenge.Core.dll
+C:\code\Skystem.Challenge\Skystem.Challenge.Core\bin\Debug\Skystem.Challenge.Core.pdb
+C:\code\Skystem.Challenge\Skystem.Challenge.Core\obj\Debug\Skystem.Challenge.Core.csprojResolveAssemblyReference.cache
+C:\code\Skystem.Challenge\Skystem.Challenge.Core\obj\Debug\Skystem.Challenge.Core.dll
+C:\code\Skystem.Challenge\Skystem.Challenge.Core\obj\Debug\Skystem.Challenge.Core.pdb

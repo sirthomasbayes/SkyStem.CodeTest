@@ -1,0 +1,12 @@
+C:\code\Skystem.Challenge\Skystem.Challenge.Service\bin\Debug\Skystem.Challenge.Service.dll.config
+C:\code\Skystem.Challenge\Skystem.Challenge.Service\bin\Debug\Skystem.Challenge.Service.dll
+C:\code\Skystem.Challenge\Skystem.Challenge.Service\bin\Debug\Skystem.Challenge.Service.pdb
+C:\code\Skystem.Challenge\Skystem.Challenge.Service\bin\Debug\EntityFramework.dll
+C:\code\Skystem.Challenge\Skystem.Challenge.Service\bin\Debug\EntityFramework.SqlServer.dll
+C:\code\Skystem.Challenge\Skystem.Challenge.Service\bin\Debug\Skystem.Challenge.Core.dll
+C:\code\Skystem.Challenge\Skystem.Challenge.Service\bin\Debug\Skystem.Challenge.Core.pdb
+C:\code\Skystem.Challenge\Skystem.Challenge.Service\bin\Debug\EntityFramework.xml
+C:\code\Skystem.Challenge\Skystem.Challenge.Service\bin\Debug\EntityFramework.SqlServer.xml
+C:\code\Skystem.Challenge\Skystem.Challenge.Service\obj\Debug\Skystem.Challenge.Service.csprojResolveAssemblyReference.cache
+C:\code\Skystem.Challenge\Skystem.Challenge.Service\obj\Debug\Skystem.Challenge.Service.dll
+C:\code\Skystem.Challenge\Skystem.Challenge.Service\obj\Debug\Skystem.Challenge.Service.pdb
