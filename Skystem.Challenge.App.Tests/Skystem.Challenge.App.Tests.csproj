@@ -32,8 +32,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+    <Reference Include="SimpleInjector, Version=4.0.12.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.4.0.12\lib\net45\SimpleInjector.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -48,17 +57,29 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="Tests\AttributeServiceTests.cs" />
+    <Compile Include="Tests\ItemGroupServiceTests.cs" />
+    <Compile Include="Tests\ItemServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\IoCContainer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Skystem.Challenge.App\Skystem.Challenge.App.csproj">
       <Project>{8D09817A-B133-4BA1-918F-5741A95BAC78}</Project>
       <Name>Skystem.Challenge.App</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Skystem.Challenge.Core\Skystem.Challenge.Core.csproj">
+      <Project>{528e537f-1fba-4277-bf65-5ad13dc3e7bf}</Project>
+      <Name>Skystem.Challenge.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Skystem.Challenge.Service\Skystem.Challenge.Service.csproj">
+      <Project>{1faeb000-7ee1-49e3-b1dd-f59910c459e9}</Project>
+      <Name>Skystem.Challenge.Service</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

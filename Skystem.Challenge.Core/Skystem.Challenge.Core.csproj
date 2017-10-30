@@ -44,6 +44,7 @@
     <Compile Include="Entities\ItemAttribute.cs" />
     <Compile Include="Entities\ItemGroup.cs" />
     <Compile Include="Exceptions\AttributeTypeNotFoundException.cs" />
+    <Compile Include="Exceptions\DuplicateAttributeTypeException.cs" />
     <Compile Include="Exceptions\ItemGroupNotFoundException.cs" />
     <Compile Include="Exceptions\ItemNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

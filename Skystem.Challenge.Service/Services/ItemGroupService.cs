@@ -88,7 +88,10 @@ namespace Skystem.Challenge.Service
 				.Select(x => x.Key)
 				.ToArray();
 
-				return (await context.Items.Where(x => candidateItemIds.Contains(x.Id)).ToListAsync())
+				return (await context.Items
+					.Where(x => candidateItemIds.Contains(x.Id))
+					.Include("Attributes.Attribute")
+					.ToListAsync())
 					.Select(x => x.Map());
 			}
 		}

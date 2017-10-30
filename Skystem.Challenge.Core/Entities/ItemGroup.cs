@@ -28,4 +28,18 @@ namespace Skystem.Challenge.Core.Entities
 
 		public IEnumerable<ItemGroupAttribute> Attributes { get; internal set; }
 	}
+
+	/// <summary>
+	/// ItemGroup with all Items whose Attributes match the Group's Attributes
+	/// </summary>
+	public class HydratedItemGroup : ItemGroup
+	{
+		public HydratedItemGroup(Int32 id, String name, String description, IEnumerable<ItemGroupAttribute> attributes = null, IEnumerable<Item> items = null)
+			:base(id, name, description, attributes)
+		{
+			Items = items ?? new List<Item>();
+		}
+
+		public IEnumerable<Item> Items { get; internal set; }
+	}
 }

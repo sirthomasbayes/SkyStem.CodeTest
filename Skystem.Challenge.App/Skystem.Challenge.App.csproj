@@ -134,6 +134,7 @@
     <Compile Include="Models\ItemFormModel.cs" />
     <Compile Include="Models\ItemGroupFormModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\IEnumerableExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />

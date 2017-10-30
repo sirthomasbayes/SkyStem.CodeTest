@@ -15,6 +15,8 @@ namespace Skystem.Challenge.Service.lib
 		{
 		}
 
+		public DbSet<DbVersion> DbVersions { get; set; }
+
 		public DbSet<ItemEntity> Items { get; set; } 
 		public DbSet<ItemAttributeEntity> ItemAttributes { get; set; }
 

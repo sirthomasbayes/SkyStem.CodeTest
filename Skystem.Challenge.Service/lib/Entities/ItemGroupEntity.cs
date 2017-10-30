@@ -2,6 +2,7 @@
 using Skystem.Challenge.Core.Utilities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -12,13 +13,15 @@ namespace Skystem.Challenge.Service.lib
 	[Table("ItemGroups")]
 	internal class ItemGroupEntity : IMappableTo<ItemGroup>
 	{
+		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public Int32 Id { get; set; }
 
 		public String Name { get; set; }
 
 		public String Description { get; set; }
 
-		[ForeignKey("AttributeId")]
+		//[ForeignKey("AttributeId")]
 		public virtual ICollection<ItemGroupAttributeEntity> Attributes { get; set; } 
 
 		public ItemGroup Map()

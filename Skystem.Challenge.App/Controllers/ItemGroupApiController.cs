@@ -1,6 +1,9 @@
 ﻿using Skystem.Challenge.App.Models;
+using Skystem.Challenge.App.Utilities;
+using Skystem.Challenge.Core.Entities;
 using Skystem.Challenge.Core.Exceptions;
 using Skystem.Challenge.Core.Services;
+using Skystem.Challenge.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,14 +36,7 @@ namespace Skystem.Challenge.App.Controllers
 				if (false == includeGroupedItems) return Ok(group);
 
 				var items = await ItemGroupService.GetGroupItemsAsync(id);
-				return Ok(new
-				{
-					Id = group.Id,
-					Name = group.Name,
-					Description = group.Description,
-					Attributes = group.Attributes,
-					Items = items
-				});
+				return Ok(new HydratedItemGroup(group.Id, group.Name, group.Description, group.Attributes, items));
 			}
 			catch (ItemGroupNotFoundException e) { return NotFound(); }
 			catch (Exception e) { return InternalServerError(e); }
@@ -48,12 +44,25 @@ namespace Skystem.Challenge.App.Controllers
 
 		[HttpGet]
 		[Route("")]
-		public async Task<IHttpActionResult> GetGroupsAsync([FromUri]Boolean pageResults = false, [FromUri]Int32 page = 1, [FromUri]Int32 pageSize = 15)
+		public async Task<IHttpActionResult> GetGroupsAsync([FromUri]Boolean pageResults = false, [FromUri]Int32 page = 1, [FromUri]Int32 pageSize = 15, [FromUri]Boolean includeGroupedItems = false)
 		{
 			try
 			{
-				var items = await ItemGroupService.GetGroupsAsync(pageResults, page, pageSize);
-				return Ok(items);
+				var groups = await ItemGroupService.GetGroupsAsync(pageResults, page, pageSize);
+				if (false == includeGroupedItems) return Ok(groups.GetHttpReturnValue());
+
+				var pageData = groups as PagedResult<ItemGroup>;
+				var groupCollection = pageResults ? pageData.Collection : groups;
+
+				var tasks = groupCollection.Select(x => ItemGroupService.GetGroupItemsAsync(x.Id)).ToArray();
+				var readyTasks = await Task.WhenAll(tasks);
+
+				var hydratedGroups = groupCollection.Zip(readyTasks, (group, items) => new HydratedItemGroup(group.Id, group.Name, group.Description, group.Attributes, items));
+				var result = pageResults ?
+					new PagedResult<HydratedItemGroup>(pageData.Page, pageData.PageSize, pageData.MaxPage, hydratedGroups) :
+					hydratedGroups;
+
+				return Ok(result.GetHttpReturnValue());
 			}
 			catch (Exception e) { return InternalServerError(e); }
 		}

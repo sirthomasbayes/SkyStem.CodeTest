@@ -6,6 +6,8 @@ using Skystem.Challenge.Service.lib;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,11 +59,28 @@ namespace Skystem.Challenge.Service
 
 		public async Task<AttributeType> AddAttributeTypeAsync(String attributeName)
 		{
+			Assert.IsNotNullOrWhitespace(attributeName);
+			Assert.IsLengthBounded(attributeName, 255);
+
 			var attribute = new AttributeTypeEntity() { Name = attributeName };
 			using (var context = new SkystemDbContext())
 			{
-				context.AttributeTypes.Add(attribute);
-				await context.SaveChangesAsync();
+				try
+				{
+					context.AttributeTypes.Add(attribute);
+					await context.SaveChangesAsync();
+				}
+				catch (Exception e)
+				{
+					if (e.InnerException != null &&
+						e.InnerException.InnerException != null)
+					{
+						var sqlException = e.InnerException.InnerException as SqlException;
+						if (sqlException != null && sqlException.Number == 2601) throw new DuplicateAttributeTypeException(attributeName);
+					}
+
+					throw e;
+				}
 			}
 
 			return attribute.Map();
@@ -71,13 +90,16 @@ namespace Skystem.Challenge.Service
 		{
 			using (var context = new SkystemDbContext())
 			{
-				var item = (await context.Items
+				var unmappedItem = await context.Items
 					.Include("Attributes.Attribute")
-					.FirstOrDefaultAsync(x => x.Id == itemId))
-					.Map();
+					.FirstOrDefaultAsync(x => x.Id == itemId);
 
-				if (item == null) throw new ItemNotFoundException(item.Id);
-				if (false == await context.AttributeTypes.AnyAsync(x => x.Id == attributeId)) throw new AttributeTypeNotFoundException(attributeId);
+				var item = unmappedItem != null ? unmappedItem.Map() : null;
+
+				var attribute = await context.AttributeTypes.FirstOrDefaultAsync(x => x.Id == attributeId);
+
+				if (item == null) throw new ItemNotFoundException(itemId);
+				if (attribute == null) throw new AttributeTypeNotFoundException(attributeId);
 
 				var itemAttribute = await context.ItemAttributes
 					.Include(x => x.Attribute)
@@ -85,7 +107,7 @@ namespace Skystem.Challenge.Service
 
 				if (itemAttribute == null)
 				{
-					itemAttribute = new ItemAttributeEntity() { ItemId = item.Id, AttributeId = attributeId, Value = value };
+					itemAttribute = new ItemAttributeEntity() { ItemId = item.Id, AttributeId = attributeId, Value = value, Attribute = attribute };
 					context.ItemAttributes.Add(itemAttribute);
 				}
 				else itemAttribute.Value = value;
@@ -94,7 +116,7 @@ namespace Skystem.Challenge.Service
 				return new Item(item.Id,
 					item.Name,
 					item.Description,
-					item.Attributes.Concat(new List<ItemAttribute>() { itemAttribute.Map() }));
+					item.Attributes);
 			}
 		}
 
@@ -102,13 +124,16 @@ namespace Skystem.Challenge.Service
 		{
 			using (var context = new SkystemDbContext())
 			{
-				var itemGroup = (await context.ItemGroups
+				var group = await context.ItemGroups
 					.Include("Attributes.Attribute")
-					.FirstOrDefaultAsync(x => x.Id == itemGroupId))
-					.Map();
+					.FirstOrDefaultAsync(x => x.Id == itemGroupId);
 
-				if (itemGroup == null) throw new ItemGroupNotFoundException(itemGroup.Id);
-				if (false == await context.AttributeTypes.AnyAsync(x => x.Id == attributeId)) throw new AttributeTypeNotFoundException(attributeId);
+				var itemGroup = group != null ? group.Map() : null;
+
+				var attribute = await context.AttributeTypes.FirstOrDefaultAsync(x => x.Id == attributeId);
+
+				if (itemGroup == null) throw new ItemGroupNotFoundException(itemGroupId);
+				if (attribute == null) throw new AttributeTypeNotFoundException(attributeId);
 
 				var groupAttribute = await context.ItemGroupAttributes
 					.Include(x => x.Attribute)
@@ -116,7 +141,7 @@ namespace Skystem.Challenge.Service
 
 				if (groupAttribute == null)
 				{
-					new ItemGroupAttributeEntity() { GroupId = itemGroup.Id, AttributeId = attributeId, Value = value };
+					groupAttribute = new ItemGroupAttributeEntity() { GroupId = itemGroup.Id, AttributeId = attributeId, Value = value, Attribute = attribute };
 					context.ItemGroupAttributes.Add(groupAttribute);
 				}
 				else groupAttribute.Value = value;
@@ -125,7 +150,7 @@ namespace Skystem.Challenge.Service
 				return new ItemGroup(itemGroup.Id,
 					itemGroup.Name,
 					itemGroup.Description,
-					itemGroup.Attributes.Concat(new List<ItemGroupAttribute>() { groupAttribute.Map() }));
+					itemGroup.Attributes);
 			}
 		}
 	}

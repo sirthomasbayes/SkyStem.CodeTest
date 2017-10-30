@@ -16,6 +16,7 @@ using SimpleInjector.Integration.Web;
 using Skystem.Challenge.Core.Services;
 using Skystem.Challenge.Service;
 using System.Reflection;
+using Skystem.Challenge.Service.Migrations;
 
 namespace Skystem.Challenge.App
 {
@@ -30,6 +31,7 @@ namespace Skystem.Challenge.App
 			container.Register<IItemService, ItemEFService>(Lifestyle.Singleton);
 			container.Register<IItemGroupService, ItemGroupEFService>(Lifestyle.Singleton);
 			container.Register<IAttributeService, AttributeEFService>(Lifestyle.Singleton);
+			container.Register<IDbSeeder, EFMigrator>(Lifestyle.Singleton);
 
 			// This is an extension method from the integration package.
 			container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
@@ -39,6 +41,9 @@ namespace Skystem.Challenge.App
 
 			DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
 			GlobalConfiguration.Configuration.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(container);
+
+			//container.GetInstance<IDbMigrator>().FlushDatabaseAsync().Wait();
+			container.GetInstance<IDbSeeder>().SeedAsync().Wait();
 
 			// Code that runs on application startup
 			AreaRegistration.RegisterAllAreas();

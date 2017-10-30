@@ -1,4 +1,5 @@
 ﻿using Skystem.Challenge.App.Models;
+using Skystem.Challenge.App.Utilities;
 using Skystem.Challenge.Core.Exceptions;
 using Skystem.Challenge.Core.Services;
 using System;
@@ -43,7 +44,7 @@ namespace Skystem.Challenge.App.Controllers
 			try
 			{
 				var items = await ItemService.GetItemsAsync(pageResults, page, pageSize);
-				return Ok(items);
+				return Ok(items.GetHttpReturnValue());
 			}
 			catch (Exception e) { return InternalServerError(e); }
 		}

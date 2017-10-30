@@ -17,5 +17,11 @@ namespace Skystem.Challenge.Core.Utilities
 		{
 			if (String.IsNullOrWhiteSpace(str)) throw new ArgumentNullException(errorMessage);
 		}
+
+		public static void IsLengthBounded(String str, Int32 length, String errorMessage = null)
+		{
+			errorMessage = errorMessage ?? $"String value's length must be at most {length} characters";
+			if (str.Length > length) throw new ArgumentException(errorMessage);
+		}
 	}
 }

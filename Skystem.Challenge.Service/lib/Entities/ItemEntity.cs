@@ -14,13 +14,14 @@ namespace Skystem.Challenge.Service.lib
 	internal class ItemEntity : IMappableTo<Item>
 	{
 		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public Int32 Id { get; set; }
 
 		public String Name { get; set; }
 
 		public String Description { get; set; }
 
-		[ForeignKey("AttributeId")]
+		//[ForeignKey("AttributeId")]
 		public virtual ICollection<ItemAttributeEntity> Attributes { get; set; }
 
 		public Item Map()

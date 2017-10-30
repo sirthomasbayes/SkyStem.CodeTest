@@ -14,8 +14,10 @@ namespace Skystem.Challenge.Service.lib
 	internal class AttributeTypeEntity : IMappableTo<AttributeType>
 	{
 		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public Int32 Id { get; set; }
 
+		[StringLength(255)]
 		[Index(IsClustered = false, IsUnique = true)]
 		public String Name { get; set; }
 
@@ -37,6 +39,9 @@ namespace Skystem.Challenge.Service.lib
 
 		public String Value { get; set; }
 
+		[ForeignKey("ItemId")]
+		public virtual ItemEntity Item { get; set; }
+
 		[ForeignKey("AttributeId")]
 		public virtual AttributeTypeEntity Attribute { get; set; }
 
@@ -57,6 +62,9 @@ namespace Skystem.Challenge.Service.lib
 		public Int32 AttributeId { get; set; }
 
 		public String Value { get; set; }
+
+		[ForeignKey("GroupId")]
+		public virtual ItemGroupEntity Group { get; set; }
 
 		[ForeignKey("AttributeId")]
 		public virtual AttributeTypeEntity Attribute { get; set; }
