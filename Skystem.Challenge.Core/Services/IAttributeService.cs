@@ -42,19 +42,19 @@ namespace Skystem.Challenge.Core.Services
 		/// <summary>
 		/// Assigns attribute with Value value to Item item.
 		/// </summary>
-		/// <param name="item">Item to assign attribute.</param>
-		/// <param name="attribute">Attribute to assign.</param>
+		/// <param name="itemId">Id of Item to assign attribute.</param>
+		/// <param name="attributeId">Id of Attribute to assign.</param>
 		/// <param name="value">Value of attribute.</param>
 		/// <returns>Item with new ItemAttribute</returns>
-		Task<Item> AssignAttributeToItemAsync(Item item, AttributeType attribute, String value);
+		Task<Item> AssignAttributeToItemAsync(Int32 itemId, Int32 attributeId, String value);
 
 		/// <summary>
 		/// Assigns attribute with Value value to ItemGroup itemGroup.
 		/// </summary>
-		/// <param name="itemGroup">ItemGroup to assign attribute.</param>
-		/// <param name="attribute">Attribute to assign.</param>
+		/// <param name="itemGroupId">Id of ItemGroup to assign attribute.</param>
+		/// <param name="attributeId">Id of Attribute to assign.</param>
 		/// <param name="value">Value of attribute.</param>
 		/// <returns>Item with new ItemGroupAttribute</returns>
-		Task<ItemGroup> AssignAttributeToGroupAsync(ItemGroup itemGroup, AttributeType attribute, String value);
+		Task<ItemGroup> AssignAttributeToGroupAsync(Int32 itemGroupId, Int32 attributeId, String value);
 	}
 }

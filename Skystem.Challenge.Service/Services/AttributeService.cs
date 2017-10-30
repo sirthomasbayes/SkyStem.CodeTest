@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Skystem.Challenge.Service
 {
-	public class AttributeService : IAttributeService
+	public class AttributeEFService : IAttributeService
 	{
 		public async Task<AttributeType> GetAttributeByIdAsync(Int32 id)
 		{
@@ -67,17 +67,30 @@ namespace Skystem.Challenge.Service
 			return attribute.Map();
 		}
 
-		public async Task<Item> AssignAttributeToItemAsync(Item item, AttributeType attribute, String value)
+		public async Task<Item> AssignAttributeToItemAsync(Int32 itemId, Int32 attributeId, String value)
 		{
 			using (var context = new SkystemDbContext())
 			{
-				if (false == await context.Items.AnyAsync(x => x.Id == item.Id)) throw new ItemNotFoundException(item.Id);
-				if (false == await context.AttributeTypes.AnyAsync(x => x.Id == attribute.Id)) throw new AttributeTypeNotFoundException(attribute.Name);
+				var item = (await context.Items
+					.Include("Attributes.Attribute")
+					.FirstOrDefaultAsync(x => x.Id == itemId))
+					.Map();
 
-				var itemAttribute = new ItemAttributeEntity() { ItemId = item.Id, AttributeId = attribute.Id, Value = value };
-				context.ItemAttributes.Add(itemAttribute);
+				if (item == null) throw new ItemNotFoundException(item.Id);
+				if (false == await context.AttributeTypes.AnyAsync(x => x.Id == attributeId)) throw new AttributeTypeNotFoundException(attributeId);
+
+				var itemAttribute = await context.ItemAttributes
+					.Include(x => x.Attribute)
+					.FirstOrDefaultAsync(x => x.AttributeId == attributeId && x.ItemId == item.Id);
+
+				if (itemAttribute == null)
+				{
+					itemAttribute = new ItemAttributeEntity() { ItemId = item.Id, AttributeId = attributeId, Value = value };
+					context.ItemAttributes.Add(itemAttribute);
+				}
+				else itemAttribute.Value = value;
+
 				await context.SaveChangesAsync();
-
 				return new Item(item.Id,
 					item.Name,
 					item.Description,
@@ -85,17 +98,30 @@ namespace Skystem.Challenge.Service
 			}
 		}
 
-		public async Task<ItemGroup> AssignAttributeToGroupAsync(ItemGroup itemGroup, AttributeType attribute, String value)
+		public async Task<ItemGroup> AssignAttributeToGroupAsync(Int32 itemGroupId, Int32 attributeId, String value)
 		{
 			using (var context = new SkystemDbContext())
 			{
-				if (false == await context.ItemGroups.AnyAsync(x => x.Id == itemGroup.Id)) throw new ItemGroupNotFoundException(itemGroup.Id);
-				if (false == await context.AttributeTypes.AnyAsync(x => x.Id == attribute.Id)) throw new AttributeTypeNotFoundException(attribute.Name);
+				var itemGroup = (await context.ItemGroups
+					.Include("Attributes.Attribute")
+					.FirstOrDefaultAsync(x => x.Id == itemGroupId))
+					.Map();
 
-				var groupAttribute = new ItemGroupAttributeEntity() { GroupId = itemGroup.Id, AttributeId = attribute.Id, Value = value };
-				context.ItemGroupAttributes.Add(groupAttribute);
+				if (itemGroup == null) throw new ItemGroupNotFoundException(itemGroup.Id);
+				if (false == await context.AttributeTypes.AnyAsync(x => x.Id == attributeId)) throw new AttributeTypeNotFoundException(attributeId);
+
+				var groupAttribute = await context.ItemGroupAttributes
+					.Include(x => x.Attribute)
+					.FirstOrDefaultAsync(x => x.AttributeId == attributeId && x.GroupId == itemGroupId);
+
+				if (groupAttribute == null)
+				{
+					new ItemGroupAttributeEntity() { GroupId = itemGroup.Id, AttributeId = attributeId, Value = value };
+					context.ItemGroupAttributes.Add(groupAttribute);
+				}
+				else groupAttribute.Value = value;
+
 				await context.SaveChangesAsync();
-
 				return new ItemGroup(itemGroup.Id,
 					itemGroup.Name,
 					itemGroup.Description,

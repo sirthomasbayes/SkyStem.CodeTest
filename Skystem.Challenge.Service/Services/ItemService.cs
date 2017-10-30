@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Skystem.Challenge.Service
 {
-	public class ItemService : IItemService
+	public class ItemEFService : IItemService
 	{
 		public async Task<Item> GetItemByIdAsync(Int32 id)
 		{

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Skystem.Challenge.Service
 {
-	public class ItemGroupService : IItemGroupService
+	public class ItemGroupEFService : IItemGroupService
 	{
 		public async Task<ItemGroup> GetGroupByIdAsync(Int32 id)
 		{

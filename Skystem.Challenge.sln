@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skystem.Challenge.Core", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skystem.Challenge.Service", "Skystem.Challenge.Service\Skystem.Challenge.Service.csproj", "{1FAEB000-7EE1-49E3-B1DD-F59910C459E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skystem.Challenge.App", "Skystem.Challenge.App\Skystem.Challenge.App.csproj", "{8D09817A-B133-4BA1-918F-5741A95BAC78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skystem.Challenge.App.Tests", "Skystem.Challenge.App.Tests\Skystem.Challenge.App.Tests.csproj", "{BB346066-758C-4BF4-8B6F-81B77B22E722}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{1FAEB000-7EE1-49E3-B1DD-F59910C459E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FAEB000-7EE1-49E3-B1DD-F59910C459E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FAEB000-7EE1-49E3-B1DD-F59910C459E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D09817A-B133-4BA1-918F-5741A95BAC78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D09817A-B133-4BA1-918F-5741A95BAC78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D09817A-B133-4BA1-918F-5741A95BAC78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D09817A-B133-4BA1-918F-5741A95BAC78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB346066-758C-4BF4-8B6F-81B77B22E722}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB346066-758C-4BF4-8B6F-81B77B22E722}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB346066-758C-4BF4-8B6F-81B77B22E722}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB346066-758C-4BF4-8B6F-81B77B22E722}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
