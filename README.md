@@ -16,11 +16,6 @@ Overview of object models:
  * ItemGroup : Represents an ItemGroup with Name, Description, and Id (PK) . An Item i belongs to ItemGroup g if i.Attributes represents a superset of g.Attributes
 
 
-
-
-Props to Mr. Doob and his [code editor](http://mrdoob.com/projects/code-editor/), from which
-the inspiration to this, and some handy implementation hints, came.
-
 ### Libraries used:
 
  * SimpleInjector : Tried it out for DI; I rather like it :) 
