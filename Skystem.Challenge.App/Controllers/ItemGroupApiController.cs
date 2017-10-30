@@ -14,9 +14,16 @@ using System.Web.Http;
 
 namespace Skystem.Challenge.App.Controllers
 {
+	/// <summary>
+	/// API for managing ItemGroups
+	/// </summary>
 	[RoutePrefix("api/groups")]
 	public class ItemGroupApiController : ApiController
 	{
+		/// <summary>
+		/// API for managing ItemGroups
+		/// </summary>
+		/// <param name="itemGroupService"></param>
 		public ItemGroupApiController(IItemGroupService itemGroupService)
 		{
 			ItemGroupService = itemGroupService;
@@ -24,6 +31,12 @@ namespace Skystem.Challenge.App.Controllers
 
 		private IItemGroupService ItemGroupService;
 
+		/// <summary>
+		/// Returns Group with Id = id
+		/// </summary>
+		/// <param name="id">Id of ItemGroup</param>
+		/// <param name="includeGroupedItems">If true, returns all Items whose Attributes are a superset of the Group's Attributess.</param>
+		/// <returns></returns>
 		[HttpGet]
 		[Route("{id}")]
 		public async Task<IHttpActionResult> GetGroupByIdAsync([FromUri]Int32 id, [FromUri]Boolean includeGroupedItems = false)
@@ -42,6 +55,14 @@ namespace Skystem.Challenge.App.Controllers
 			catch (Exception e) { return InternalServerError(e); }
 		}
 
+		/// <summary>
+		/// Retrieves list of all Items.
+		/// </summary>
+		/// <param name="pageResults">If true, pages the list.</param>
+		/// <param name="page">If pageResults = true, returns specified page.</param>
+		/// <param name="pageSize">If pageResults = true, returns specified number of items.</param>
+		/// <param name="includeGroupedItems">If true, returns all Items whose Attributes are a superset of the Group's Attributess.</param>
+		/// <returns>200 - IEnumerable[Item] | 200 - PagedResult[ItemGroup] when pageResults = true | 500 - error</returns>
 		[HttpGet]
 		[Route("")]
 		public async Task<IHttpActionResult> GetGroupsAsync([FromUri]Boolean pageResults = false, [FromUri]Int32 page = 1, [FromUri]Int32 pageSize = 15, [FromUri]Boolean includeGroupedItems = false)
@@ -67,6 +88,11 @@ namespace Skystem.Challenge.App.Controllers
 			catch (Exception e) { return InternalServerError(e); }
 		}
 
+		/// <summary>
+		/// Adds new ItemGroup
+		/// </summary>
+		/// <param name="model">model.Name = ItemGroup's name | model.Description = ItemGroup's description</param>
+		/// <returns>200 - ItemGroup | 500 - error</returns>
 		[HttpPost]
 		[Route("")]
 		public async Task<IHttpActionResult> AddGroupAsync([FromBody]ItemGroupFormModel model)
@@ -79,6 +105,12 @@ namespace Skystem.Challenge.App.Controllers
 			catch (Exception e) { return InternalServerError(e); }
 		}
 
+		/// <summary>
+		/// Updates ItemGroup with Id = id
+		/// </summary>
+		/// <param name="id">Id of ItemGroup</param>
+		/// <param name="model">model.Name = ItemGroup's name | model.Description = ItemGroup's description</param>
+		/// <returns>200 - ItemGroup | 404 - ItemGroupNotFoundException | 500 - error</returns>
 		[HttpPut]
 		[Route("{id}")]
 		public async Task<IHttpActionResult> UpdateGroupAsync([FromUri]Int32 id, [FromBody]ItemGroupFormModel model)
@@ -92,6 +124,11 @@ namespace Skystem.Challenge.App.Controllers
 			catch (Exception e) { return InternalServerError(e); }
 		}
 
+		/// <summary>
+		/// Deletes ItemGroup with Id = id
+		/// </summary>
+		/// <param name="id">Id of ItemGroup</param>
+		/// <returns>200 - ItemGroup | 404 - ItemGroupNotFoundException | 500 - error</returns>
 		[HttpDelete]
 		[Route("{id}")]
 		public async Task<IHttpActionResult> RemoveGroupAsync([FromUri]Int32 id)
