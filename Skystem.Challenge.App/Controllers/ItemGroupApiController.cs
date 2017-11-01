@@ -35,11 +35,12 @@ namespace Skystem.Challenge.App.Controllers
 		/// Returns Group with Id = id
 		/// </summary>
 		/// <param name="id">Id of ItemGroup</param>
-		/// <param name="includeGroupedItems">If true, returns all Items whose Attributes are a superset of the Group's Attributess.</param>
+		/// <param name="includeGroupedItems">If true, returns all Items whose Attributes are a superset of the Group's Attributes.</param>
+		/// <param name="matchSupersets">If set to true, will group Items whose Attributes are a superset of ItemGroup id's attributes.</param>
 		/// <returns></returns>
 		[HttpGet]
 		[Route("{id}")]
-		public async Task<IHttpActionResult> GetGroupByIdAsync([FromUri]Int32 id, [FromUri]Boolean includeGroupedItems = false)
+		public async Task<IHttpActionResult> GetGroupByIdAsync([FromUri]Int32 id, [FromUri]Boolean includeGroupedItems = false, [FromUri]Boolean matchSupersets = true)
 		{
 			try
 			{
@@ -48,7 +49,7 @@ namespace Skystem.Challenge.App.Controllers
 
 				if (false == includeGroupedItems) return Ok(group);
 
-				var items = await ItemGroupService.GetGroupItemsAsync(id);
+				var items = await ItemGroupService.GetGroupItemsAsync(id, matchSupersets);
 				return Ok(new HydratedItemGroup(group.Id, group.Name, group.Description, group.Attributes, items));
 			}
 			catch (ItemGroupNotFoundException e) { return NotFound(); }
@@ -62,10 +63,11 @@ namespace Skystem.Challenge.App.Controllers
 		/// <param name="page">If pageResults = true, returns specified page.</param>
 		/// <param name="pageSize">If pageResults = true, returns specified number of items.</param>
 		/// <param name="includeGroupedItems">If true, returns all Items whose Attributes are a superset of the Group's Attributess.</param>
+		/// <param name="matchSupersets">If set to true, will group Items whose Attributes are a superset of ItemGroup id's attributes.</param>
 		/// <returns>200 - IEnumerable[Item] | 200 - PagedResult[ItemGroup] when pageResults = true | 500 - error</returns>
 		[HttpGet]
 		[Route("")]
-		public async Task<IHttpActionResult> GetGroupsAsync([FromUri]Boolean pageResults = false, [FromUri]Int32 page = 1, [FromUri]Int32 pageSize = 15, [FromUri]Boolean includeGroupedItems = false)
+		public async Task<IHttpActionResult> GetGroupsAsync([FromUri]Boolean pageResults = false, [FromUri]Int32 page = 1, [FromUri]Int32 pageSize = 15, [FromUri]Boolean includeGroupedItems = false, [FromUri]Boolean matchSupersets = true)
 		{
 			try
 			{
@@ -75,7 +77,7 @@ namespace Skystem.Challenge.App.Controllers
 				var pageData = groups as PagedResult<ItemGroup>;
 				var groupCollection = pageResults ? pageData.Collection : groups;
 
-				var tasks = groupCollection.Select(x => ItemGroupService.GetGroupItemsAsync(x.Id)).ToArray();
+				var tasks = groupCollection.Select(x => ItemGroupService.GetGroupItemsAsync(x.Id, matchSupersets)).ToArray();
 				var readyTasks = await Task.WhenAll(tasks);
 
 				var hydratedGroups = groupCollection.Zip(readyTasks, (group, items) => new HydratedItemGroup(group.Id, group.Name, group.Description, group.Attributes, items));

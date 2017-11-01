@@ -53,7 +53,7 @@ namespace Skystem.Challenge.Service
 			}
 		}
 
-		public async Task<IEnumerable<Item>> GetGroupItemsAsync(Int32 id)
+		public async Task<IEnumerable<Item>> GetGroupItemsAsync(Int32 id, Boolean matchSupersets = true)
 		{
 			using (var context = new SkystemDbContext())
 			{
@@ -78,7 +78,10 @@ namespace Skystem.Challenge.Service
 
 					foreach (var attribute in x)
 					{
-						if (false == attributeKvp.Contains(attribute.AttributeId)) continue;
+						if (false == attributeKvp.Contains(attribute.AttributeId))
+							if (matchSupersets) continue;
+							else return false;
+
 						if (attributeKvp[attribute.AttributeId].First().Value != attribute.Value) return false;
 						matchCount++;
 					}
@@ -88,11 +91,15 @@ namespace Skystem.Challenge.Service
 				.Select(x => x.Key)
 				.ToArray();
 
-				return (await context.Items
+				var items = await context.Items
 					.Where(x => candidateItemIds.Contains(x.Id))
 					.Include("Attributes.Attribute")
-					.ToListAsync())
-					.Select(x => x.Map());
+					.ToListAsync();
+
+				return (matchSupersets ? 
+					items :
+					items.Where(x => x.Attributes.Count == attributeIds.Count()))
+				.Select(x => x.Map());
 			}
 		}
 

@@ -79,6 +79,35 @@ namespace Skystem.Challenge.App.Tests
 		{
 			var group = await ItemGroupService.AddItemGroupAsync("FullGroup", "Group with items.");
 
+			var attribute1 = await AttributeService.AddAttributeTypeAsync("AllMatchedAttribute1");
+			var attribute2 = await AttributeService.AddAttributeTypeAsync("AllMatchedAttribute2");
+			var attribute3 = await AttributeService.AddAttributeTypeAsync("AllUnmatchedAttribute1");
+
+			group = await AttributeService.AssignAttributeToGroupAsync(group.Id, attribute1.Id, "Value1");
+			group = await AttributeService.AssignAttributeToGroupAsync(group.Id, attribute2.Id, "Value2");
+
+			var item1 = await ItemService.AddItemAsync("FirstMatchedItem", "First matched item.");
+			var item2 = await ItemService.AddItemAsync("SecondMatchedItem", "Second matched item.");
+
+			item1 = await AttributeService.AssignAttributeToItemAsync(item1.Id, attribute1.Id, "Value1");
+			item1 = await AttributeService.AssignAttributeToItemAsync(item1.Id, attribute2.Id, "Value2");
+
+			item2 = await AttributeService.AssignAttributeToItemAsync(item2.Id, attribute1.Id, "Value1");
+			item2 = await AttributeService.AssignAttributeToItemAsync(item2.Id, attribute2.Id, "Value2");
+			item2 = await AttributeService.AssignAttributeToItemAsync(item2.Id, attribute3.Id, "Value3");
+
+			var matches = await ItemGroupService.GetGroupItemsAsync(group.Id, false);
+
+			Assert.AreEqual(1, matches.Count());
+			Assert.AreEqual(matches.First().Id, item1.Id);
+			Assert.AreNotEqual(matches.First().Id, item2.Id);
+		}
+
+		[TestMethod]
+		public async Task ShouldReturnItemsWithSupersetOfMatchingAttributes()
+		{
+			var group = await ItemGroupService.AddItemGroupAsync("FullGroup", "Group with items.");
+
 			var attribute1 = await AttributeService.AddAttributeTypeAsync("MatchedAttribute1");
 			var attribute2 = await AttributeService.AddAttributeTypeAsync("MatchedAttribute2");
 			var attribute3 = await AttributeService.AddAttributeTypeAsync("UnmatchedAttribute1");

@@ -30,8 +30,9 @@ namespace Skystem.Challenge.Core.Services
 		/// Items belong to ItemGroup only if an Item's Attributes is a superset (not strict) of the ItemGroup's attributes.
 		/// </summary>
 		/// <param name="id">Id of ItemGroup</param>
+		/// <param name="matchSupersets">If set to true, will group Items whose Attributes are a superset of ItemGroup id's attributes.</param>
 		/// <returns>IEnumerable[Item]</returns>
-		Task<IEnumerable<Item>> GetGroupItemsAsync(Int32 id);
+		Task<IEnumerable<Item>> GetGroupItemsAsync(Int32 id, Boolean matchSupersets = true);
 
 		/// <summary>
 		/// Add ItemGroup with Name = name, Description = description
