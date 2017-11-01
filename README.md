@@ -27,6 +27,6 @@ After setting up IIS for Skystem.Challenge.App, documentation for API can be fou
  * SimpleInjector : Tried it out for DI; I rather like it :) 
  * EntityFramework : For data-access
  * .NET MVC + WebAPI : For implementing API
- * Visual Studio's built-in Testing Framework is used for integration tests.
+ * Visual Studio's built-in Testing Framework is used for integration tests. To run tests: Menu - Test > Run > All Tests
 
 Additional setup documentation can be found in the Skystem Setup Documentation pdf.
