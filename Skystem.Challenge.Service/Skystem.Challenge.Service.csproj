@@ -52,7 +52,7 @@
     <Compile Include="lib\Entities\ItemAttributeEntity.cs" />
     <Compile Include="lib\Entities\ItemEntity.cs" />
     <Compile Include="lib\Entities\ItemGroupEntity.cs" />
-    <Compile Include="Seeders\DbContext\EFMigrator.cs" />
+    <Compile Include="Seeders\DbContext\EFSeeder.cs" />
     <Compile Include="Seeders\IDbSeeder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AttributeService.cs" />
