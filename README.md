@@ -18,7 +18,7 @@ Overview of object models:
 Notes on SQL Server:
  * Skystem.Challenge.App.Tests : DatabaseName=SkystemTest, ConfigName=SkystemDb
  * Skystem.Challenge.App : DatabaseName=Skystem, ConfigName=SkystemDb
- * Both configurations use SQL authentication and connects as sa with password Password123
+ * Both configurations use SQL authentication and connects as sa with password cZjJVXnu
 
 After setting up IIS for Skystem.Challenge.App, documentation for API can be found @ /swagger
 
@@ -28,4 +28,4 @@ After setting up IIS for Skystem.Challenge.App, documentation for API can be fou
  * EntityFramework : For data-access
  * .NET MVC + WebAPI : For implementing API 
 
-
+Additional setup documentation can be found in the Skystem Setup Documentation pdf.
